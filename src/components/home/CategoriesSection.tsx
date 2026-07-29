@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { useCategories } from "../../hooks/useCategories";
 
 export default function CategoriesSection() {
-  const { categories, loading, error } = useCategories();
+  const { categories, loading} = useCategories();
 
   if (loading) {
     return (
@@ -16,15 +16,6 @@ export default function CategoriesSection() {
     );
   }
 
-  if (error) {
-    return (
-      <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-red-500">{error}</p>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="bg-[#F8F4EC] py-20">
@@ -81,6 +72,7 @@ export default function CategoriesSection() {
                 {category.description && (
                   <p className="mt-2 line-clamp-2 text-center text-sm text-gray-500">
                     {category.description}
+                    
                   </p>
                 )}
 

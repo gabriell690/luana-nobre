@@ -9,24 +9,13 @@ export default function FeaturedProductsSection() {
     const {
         products,
         loading,
-        error
-    } = useProducts(true);
+    } = useProducts();
 
     if (loading) {
         return (
             <section className="py-24">
                 <Container>
                     <p>Carregando produtos...</p>
-                </Container>
-            </section>
-        );
-    }
-
-    if (error) {
-        return (
-            <section className="py-24">
-                <Container>
-                    <p>{error}</p>
                 </Container>
             </section>
         );

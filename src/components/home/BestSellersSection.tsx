@@ -9,8 +9,7 @@ export default function BestSellersSection() {
     const { products, loading } = useProducts();
 
     const bestSellers = products
-        .filter(product => product.sales_count > 0)
-        .sort((a, b) => b.sales_count - a.sales_count)
+        .filter(product => product.featured)
         .slice(0, 8);
 
     if (loading) return null;

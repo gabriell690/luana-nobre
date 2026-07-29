@@ -6,6 +6,7 @@ export interface Category {
   name: string;
   slug: string;
   image?: string;
+  description?: string;
 }
 
 export function useCategories() {
@@ -18,8 +19,9 @@ export function useCategories() {
     setLoading(false);
   }, []);
 
-  return {
-    categories,
-    loading,
-  };
+ return {
+  categories,
+  loading,
+  error: null,
+};
 }
