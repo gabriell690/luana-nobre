@@ -7,7 +7,9 @@ export interface Profile {
   birth_date?: string;
   avatar_url?: string;
   role: "admin" | "customer";
-}export interface Profile {
+}
+
+export interface Profile {
   id: string;
   email: string;
   name: string;
