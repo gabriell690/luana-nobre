@@ -12,6 +12,7 @@ import { AdminProvider } from "../contexts/AdminContext";
 import CategoriesPage from "../pages/admin/CategoriesPage";
 import ProductDetails from "../pages/ProductDetails";
 import Products from "../pages/Products";
+import AdminProducts from "../pages/admin/AdminProducts";
 
 export function AppRoutes() {
   return (
@@ -43,13 +44,15 @@ export function AppRoutes() {
         {/* Painel Administrativo */}
 
         <Route
-          path="/admin"
-          element={
-            <AdminProvider>
-              <AdminLayout />
-            </AdminProvider>
-          }
-        >
+  path="/admin"
+  element={
+  
+      <AdminProvider>
+        <AdminLayout />
+      </AdminProvider>
+   
+  }
+>
           {/* Dashboard */}
           <Route
             index
@@ -58,9 +61,9 @@ export function AppRoutes() {
 
           {/* Produtos */}
           <Route
-            path="products"
-            element={<Products />}
-          />
+  path="products"
+  element={<AdminProducts />}
+ />
 
           {/* Categorias */}
           {/* <Route path="categories" element={<Categories />} /> */}

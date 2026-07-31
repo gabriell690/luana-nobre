@@ -1,9 +1,10 @@
-import {
-  Bell,
-  Menu,
-  Search,
-} from "lucide-react";
+import { Bell, Menu, Search } from "lucide-react";
 import { useLocation } from "react-router-dom";
+
+type AdminHeaderProps = {
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const titles: Record<string, string> = {
   "/admin": "Dashboard",
@@ -17,47 +18,43 @@ const titles: Record<string, string> = {
   "/admin/settings": "Configurações",
 };
 
-export default function AdminHeader() {
+export default function AdminHeader({
+  sidebarOpen,
+  setSidebarOpen,
+}: AdminHeaderProps) {
   const { pathname } = useLocation();
 
   return (
-    <header className="flex h-20 items-center justify-between border-b border-zinc-200 bg-white px-8">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-zinc-200 bg-white px-4 lg:px-8">
 
       {/* Esquerda */}
+      <div className="flex items-center gap-4">
 
-      <div className="flex items-center gap-5">
-
-        <button className="rounded-xl border border-zinc-200 p-2 transition hover:bg-zinc-100">
-
-          <Menu size={20} />
-
+        {/* Menu Mobile */}
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="rounded-xl border border-zinc-200 p-2 transition hover:bg-zinc-100 lg:hidden"
+        >
+          <Menu size={22} />
         </button>
 
         <div>
-
-          <h1 className="text-2xl font-bold text-zinc-800">
-
+          <h1 className="text-xl font-bold text-zinc-800 lg:text-2xl">
             {titles[pathname] ?? "Painel"}
-
           </h1>
 
-          <p className="text-sm text-zinc-500">
-
+          <p className="hidden text-sm text-zinc-500 sm:block">
             Bem-vindo ao painel administrativo
-
           </p>
-
         </div>
 
       </div>
 
       {/* Direita */}
-
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3 lg:gap-5">
 
         {/* Pesquisa */}
-
-        <div className="relative hidden lg:block">
+        <div className="relative hidden xl:block">
 
           <Search
             size={18}
@@ -72,7 +69,6 @@ export default function AdminHeader() {
         </div>
 
         {/* Notificações */}
-
         <button className="relative rounded-xl border border-zinc-200 p-3 transition hover:bg-zinc-100">
 
           <Bell size={20} />
@@ -82,27 +78,20 @@ export default function AdminHeader() {
         </button>
 
         {/* Avatar */}
-
         <button className="flex items-center gap-3 rounded-xl border border-zinc-200 px-3 py-2 transition hover:bg-zinc-100">
 
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#C89A2D] font-bold text-white">
-
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C89A2D] font-bold text-white">
             A
-
           </div>
 
           <div className="hidden xl:block text-left">
 
             <p className="font-semibold text-zinc-800">
-
               Administrador
-
             </p>
 
             <p className="text-xs text-zinc-500">
-
               adm@luananobre.com
-
             </p>
 
           </div>

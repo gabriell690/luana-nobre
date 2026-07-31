@@ -9,10 +9,16 @@ import {
   Image,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabase";
 import logo from "@/assets/logo.png";
+
+type AdminSidebarProps = {
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const menu = [
   {
@@ -25,7 +31,6 @@ const menu = [
       },
     ],
   },
-
   {
     title: "CATÁLOGO",
     items: [
@@ -46,7 +51,6 @@ const menu = [
       },
     ],
   },
-
   {
     title: "VENDAS",
     items: [
@@ -67,7 +71,6 @@ const menu = [
       },
     ],
   },
-
   {
     title: "MARKETING",
     items: [
@@ -78,7 +81,6 @@ const menu = [
       },
     ],
   },
-
   {
     title: "SISTEMA",
     items: [
@@ -91,110 +93,164 @@ const menu = [
   },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({
+  sidebarOpen,
+  setSidebarOpen,
+}: AdminSidebarProps) {
   const navigate = useNavigate();
 
   async function logout() {
+    setSidebarOpen(false);
+
     await supabase.auth.signOut();
+
     navigate("/admin/login");
   }
 
+  function closeSidebar() {
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  }
+
   return (
-    <aside className="flex w-70 flex-col border-r border-zinc-200 bg-white">
+    <aside
+      className={`
+        fixed
+        top-0
+        left-0
+        z-50
+        flex
+        h-screen
+        w-72
+        flex-col
+        border-r
+        border-zinc-200
+        bg-white
+        shadow-xl
+        transition-transform
+        duration-300
+        ease-in-out
 
-      {/* Logo */}
-<div className="border-b border-zinc-200 bg-white px-1 py-1">
-  <div className="flex flex-col items-center">
+        ${
+          sidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full"
+        }
 
-    <img
-  src={logo}
-  alt="Luana Nobre"
-  className="h-50 w-auto object-contain transition-transform duration-300 hover:scale-105"
-/>
-  </div>
-</div>
+        lg:static
+        lg:translate-x-0
+        lg:shadow-none
+      `}
+    >
+      {/* Cabeçalho */}
+      <div className="relative border-b border-zinc-200">
+
+        {/* Botão fechar mobile */}
+        <button
+          onClick={() => setSidebarOpen(false)}
+          className="absolute right-4 top-4 rounded-lg p-2 hover:bg-zinc-100 lg:hidden"
+        >
+          <X size={20} />
+        </button>
+
+        <div className="flex justify-center p-6">
+          <img
+            src={logo}
+            alt="Luana Nobre"
+            className="h-28 w-auto object-contain"
+          />
+        </div>
+      </div>
 
       {/* Menu */}
-
       <div className="flex-1 overflow-y-auto py-6">
 
         {menu.map((group) => (
-
           <div
             key={group.title}
             className="mb-8"
           >
-
-            <p className="mb-3 px-6 text-xs font-semibold tracking-widest text-zinc-400">
-
+            <p className="mb-3 px-6 text-xs font-semibold tracking-[0.2em] text-zinc-400">
               {group.title}
-
             </p>
 
             {group.items.map((item) => {
-
               const Icon = item.icon;
 
               return (
-
                 <NavLink
                   key={item.path}
                   to={item.path}
+                  onClick={closeSidebar}
                   className={({ isActive }) =>
-                    `mx-3 mb-1 flex items-center gap-3 rounded-xl px-4 py-3 transition ${
+                    `
+                    mx-3
+                    mb-1
+                    flex
+                    items-center
+                    gap-3
+                    rounded-xl
+                    px-4
+                    py-3
+                    transition-all
+                    duration-200
+
+                    ${
                       isActive
-                        ? "bg-[#C89A2D] text-white"
-                        : "text-zinc-600 hover:bg-zinc-100"
-                    }`
+                        ? "bg-[#C89A2D] text-white shadow-md"
+                        : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                    }
+                  `
                   }
                 >
-
                   <Icon size={18} />
 
                   <span className="font-medium">
                     {item.label}
                   </span>
-
                 </NavLink>
-
               );
             })}
-
           </div>
-
         ))}
-
       </div>
 
-      {/* Usuário */}
-
+      {/* Rodapé */}
       <div className="border-t border-zinc-200 p-5">
 
         <div className="mb-5">
-
-          <p className="font-semibold">
+          <p className="font-semibold text-zinc-800">
             Administrador
           </p>
 
           <p className="text-sm text-zinc-500">
             adm@luananobre.com
           </p>
-
         </div>
 
         <button
           onClick={logout}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-300 py-3 transition hover:bg-zinc-100"
+          className="
+            flex
+            w-full
+            items-center
+            justify-center
+            gap-2
+            rounded-xl
+            border
+            border-zinc-300
+            py-3
+            transition
+            hover:bg-zinc-100
+          "
         >
-
           <LogOut size={18} />
 
-          Sair
-
+          <span>Sair</span>
         </button>
 
       </div>
-
     </aside>
   );
 }

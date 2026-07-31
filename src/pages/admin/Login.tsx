@@ -15,20 +15,26 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function checkSession() {
+ useEffect(() => {
+  async function checkSession() {
+    try {
       const session = await adminAuth.session();
 
-      if (session.data.session) {
+      console.log(session);
+
+      if (session?.data?.session) {
         navigate("/admin", { replace: true });
         return;
       }
-
+    } catch (error) {
+      console.error("Erro ao verificar sessão:", error);
+    } finally {
       setCheckingSession(false);
     }
+  }
 
-    checkSession();
-  }, [navigate]);
+  checkSession();
+}, [navigate]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
